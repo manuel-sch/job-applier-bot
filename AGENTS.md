@@ -8,15 +8,22 @@ SaaS-Tool zur automatisierten Bewerbungsgenerierung. Python-Monorepo.
 
 ## 🔧 Tech Stack
 - **Sprache**: Python 3.12
-- **Wichtige Libraries**: `python-jobspy`, `anthropic` SDK, `pandas`, `APScheduler`
+- **Wichtige Libraries**: `python-jobspy`, `langchain`, `langchain-google-genai`, `pandas`, `APScheduler`
 - **Datenbank**: SQLite
 - **Testing & Linting**: `pytest` für Tests, `ruff` für Linting
 
 ## 🏗️ Architektur
-- `/scraper/` — JobSpy-Wrapper
-- `/ai/` — Prompt-Builder + Anthropic-Client
+- `/scraper/` — JobSpy-Wrapper (Job-Extraktion)
+- `/ai/` — LangChain LCEL-Pipelines. **Hybrid-Template-Ansatz**: LLM schreibt dynamisches Intro/Outro basierend auf Job-Keywords, die mit dem User-Profil matchen. Der Basis-Lebenslauf/-Kern bleibt deterministisch aus einem Markdown-Template.
 - `/prompts/` — Alle System/User-Prompts als `.md`-Dateien
-- `/output/` — Excel/SQLite-Output
+- `/core/` — Konfiguration / Benachrichtigungen (E-Mail HITL)
+- `/output/` — Excel/SQLite-Output & generierte Bewerbungen
+
+## 🧠 Workflow (MVP)
+1. **Scrape**: Jobs via `python-jobspy` holen.
+2. **Analyze**: Job-Profil und eigenen CV via LangChain abgleichen -> Schnittmenge (Top-3-Matches) als Pydantic-Objekt extrahieren.
+3. **Generate**: Hybrid-Template-Bewerbung (Basis-CV + AI-Intro/Outro) erstellen.
+4. **HITL (Human-in-the-Loop)**: E-Mail Benachrichtigung mit Score, generiertem CV und Link zur Original-Anzeige. Keine automatische Mail direkt an Arbeitgeber!
 
 ## 🛠️ Commands
 - `make run` — Pipeline starten
@@ -46,7 +53,7 @@ SaaS-Tool zur automatisierten Bewerbungsgenerierung. Python-Monorepo.
 Um den "Search-First"-Ansatz und die "State of the Art"-Anforderung zu erfüllen, stehen folgende MCP (Model Context Protocol) Server zur Verfügung:
 
 - **Tavily**: Primäres Tool für Echtzeit-Websuche nach aktuellen Python-Trends.
-- **Context7**: Spezialisiert auf die Abfrage aktueller Dokumentationen und Code-Beispiele für Frameworks/Libraries (besonders nützlich für `anthropic` und `jobspy`).
+- **Context7**: Spezialisiert auf die Abfrage aktueller Dokumentationen und Code-Beispiele für Frameworks/Libraries (besonders nützlich für `langchain-google-genai` und `jobspy`).
 - **GitHub**: Zugriff auf Repositories für Issue-Tracking, Code-Search und Pull Requests.
 
 ### 🧠 Research-Strategie & MCP-Orchestrierung
