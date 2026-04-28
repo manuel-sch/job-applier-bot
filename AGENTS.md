@@ -41,6 +41,7 @@ SaaS-Tool zur automatisierten Bewerbungsgenerierung. Python-Monorepo.
 - **Search-First**: MCP-Check (Tavily/Context7) vor internem Wissen für State-of-the-Art (z.B. aktuelle Docs zu Anthropic SDK API oder JobSpy).
 - **Clean Code**: SOLID, DRY, Typsicherheit. "DONE" = `make test` & `make lint` sind fehlerfrei.
 - **Self-Correction**: Max. 3 Iterationen bei Fehlern, dann Rücksprache.
+- **Living Documentation**: Passe die `README.md` proaktiv an, falls sich durch neue Features oder Änderungen Relevantes am Projekt-Setup, der Architektur oder Usage ändert.
 
 ## 🤝 Human-in-the-Loop
 `[WAIT_FOR_CONFIRMATION]` erforderlich bei:
